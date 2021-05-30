@@ -4,15 +4,23 @@
 #Made by StatAlex 22.05.2021
 #----------------------------------------------------------------------
 
+#Установка образа Ubuntu:18.04
 FROM ubuntu:18.04
 
-RUN apt-get -y update
-RUN apt-get -y install apache2
+#Выполнение обновления и установка webserver apache2
+RUN apt-get -y update && apt-get -y install apache2
 
-ADD https://github.com/Stat-Alex/myproject1/blob/2d59a0b11cfe8babfdac8be1789bcc0a2ff2a68d/index.html \
-/var/www/html
+#Копирование файла с GitHub и создание файла index.html
+ADD https://raw.githubusercontent.com/Stat-Alex/myproject1/main/index.html \
+/var/www/html/index.html
 
+#Изменение прав доступа к файлу
+RUN chmod 644 /var/www/html/index.html
+
+#Запуск apache при каждом перезапуске сервера
 CMD ["/usr/sbin/apache2ctl", "-DFOREGROUND"]
+
+#Открытие порта 
 EXPOSE 80
 
 
