@@ -11,8 +11,8 @@ FROM ubuntu:18.04
 RUN apt-get -y update && apt-get -y install apache2
 
 #Копирование файла с GitHub и создание файла index.html
-ADD https://raw.githubusercontent.com/Stat-Alex/myproject1/main/index.html \
-/var/www/html/index.html
+#ADD https://raw.githubusercontent.com/Stat-Alex/myproject1/main/index.html \
+COPY index.html /var/www/html/
 
 #Изменение прав доступа к файлу
 RUN chmod 644 /var/www/html/index.html
