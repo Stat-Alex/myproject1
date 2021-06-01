@@ -1,7 +1,7 @@
 # Manual of build and deploy docker image
 
 ### Requirements
-- Instalated Docker
+- Installed Docker
 
 ### Step by step instruction
 1. Copy the Dockerfile and index.html file to the server in one directory, go to the directory
@@ -22,6 +22,7 @@ docker run -d -p <dest_port>:80 <name_of_image>:tag
 ```sh
 docker ps
 ```
+
 
 Verify the deployment by navigating to your server address in
 your preferred browser.
