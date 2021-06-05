@@ -1,0 +1,25 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI-CD-Pipeline-to-AWS-ElasticBeanstalk
+env:
+  PACKAGE-S3-BUCKET_AME : "myproject1-aplication-packages"
+  APPLICATION_NAME      : "Myproject1"
+  ENVIRONMENT_NAME      : "Myproject1-env"
+  DEPLOY_PACKAGE_NAME   : "Myproject1_app_${{ github.sha }}.zip"
+  AWS_REGION_NAME       : "eu-north-1"
+
+on:
+  push:
+    branches: 
+      - master
+      
+jobs:
+  my-ci-part:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Git clone our repo
+        uses: actions/checkout@v2
+
+      - name: Create ZIP deployment package
+        run: zip - r ${{ env.DEPLOY_PACKAGE_NAME }} ./ -x *.git*
