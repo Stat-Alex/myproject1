@@ -49,16 +49,17 @@ jobs:
           aws-secret-access-key  : ${{ secrets.MY_AWS_SECRET_KEY }}
           aws-region             : ${{ env.AWS_REGION_NAME }}
           
-      - name: Create new ElasticBeanstalk Application 
-        run : |
-          aws elasticbeanstalk create-application-version \
-          --application-name ${{ env.APPLICATION_NAME }} \
-          --source-bundle S3Bucket="${{ env.PACKAGE_S3_BUCKET_NAME }}",S3Key="${{ env.DEPLOY_PACKAGE_NAME }}" \
-          --version-label "Version-${{ github.sha }}" \
-          --description "CommitSHA-${{ github.sha }}"
+      - name: Copy zip to folder on EC2 instance 
+        run : aws cp s3://${{ env.PACKAGE_S3_BUCKET_NAME }}/${{ env.DEPLOY_PACKAGE_NAME }} ~/${{ env.PACKAGE_S3_BUCKET_NAME }}/
           
-      - name: Deploy new ElasticBeanstalk Application Version
-        run : aws elasticbeanstalk update-environment --environment-name ${{ env.ENVIRONMENT_NAME }} --version-label "Version-${{ github.sha }}"
+      - name: Unzip application file
+        run : unzip ~/${{ env.PACKAGE_S3_BUCKET_NAME }}/${{ env.DEPLOY_PACKAGE_NAME }} ~/${{ env.PACKAGE_S3_BUCKET_NAME }}/Myproject1_app_${{ github.sha }}/
+      
+      - name: Create Doker image
+        run : docker build -t Myproject1_app_${{ github.sha }}:v.1 ~/Myproject1_app_${{ github.sha }}
+                
+      - name: Run Doker container
+        run : docker run -d -p 7777:80 Myproject1_app_${{ github.sha }}:v1 
           
       - name: Print Message for CD finish
         run : echo "CD Pipeline part finished successfully!" 
