@@ -50,7 +50,7 @@ jobs:
           aws-region             : ${{ env.AWS_REGION_NAME }}
           
       - name: Copy zip to folder on EC2 instance 
-        run : aws cp s3://${{ env.PACKAGE_S3_BUCKET_NAME }}/${{ env.DEPLOY_PACKAGE_NAME }} ~/${{ env.PACKAGE_S3_BUCKET_NAME }}/
+        run : aws s3 cp s3://${{ env.PACKAGE_S3_BUCKET_NAME }}/${{ env.DEPLOY_PACKAGE_NAME }} ~/${{ env.PACKAGE_S3_BUCKET_NAME }}/
           
       - name: Unzip application file
         run : unzip ~/${{ env.PACKAGE_S3_BUCKET_NAME }}/${{ env.DEPLOY_PACKAGE_NAME }} ~/${{ env.PACKAGE_S3_BUCKET_NAME }}/Myproject1_app_${{ github.sha }}/
