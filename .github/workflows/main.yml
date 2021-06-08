@@ -20,47 +20,18 @@ jobs:
       - name: Git clone our repo
         uses: actions/checkout@v2
       
-      - name: Create ZIP deployment package
-        run: zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./ -x *.git*
-        
-      - name: Configure my AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with: 
-          aws-access-key-id      : ${{ secrets.MY_AWS_ACCESS_KEY }}
-          aws-secret-access-key : ${{ secrets.MY_AWS_SECRET_KEY }}
-          aws-region             : ${{ env.AWS_REGION_NAME }}
-          
-      - name: Copy Deployment to S3 bucket
-        run : aws s3 cp ${{ env.DEPLOY_PACKAGE_NAME }} s3://${{ env.PACKAGE_S3_BUCKET_NAME }}/
-        
-      - name: Print Message for CI finish
-        run : echo "CI Pipeline part finished successfully!" 
-
-
-  my-cd-part:
-    runs-on: ubuntu-latest
-    needs  : [my-ci-part] 
-
-    steps:
-      - name: Configure my AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with: 
-          aws-access-key-id      : ${{ secrets.MY_AWS_ACCESS_KEY }}
-          aws-secret-access-key  : ${{ secrets.MY_AWS_SECRET_KEY }}
-          aws-region             : ${{ env.AWS_REGION_NAME }}
-          
-      - name: Copy zip to folder on EC2 instance 
-        run : aws s3 cp s3://${{ env.PACKAGE_S3_BUCKET_NAME }}/${{ env.DEPLOY_PACKAGE_NAME }} /home/ubuntu/${{ env.PACKAGE_S3_BUCKET_NAME }}/
-          
-      - name: Unzip application file
-        run : unzip /home/ubuntu/${{ env.PACKAGE_S3_BUCKET_NAME }}/${{ env.DEPLOY_PACKAGE_NAME }} /home/ubuntu/${{ env.PACKAGE_S3_BUCKET_NAME }}/Myproject1_app_${{ github.sha }}/
-      
-      - name: Create Doker image
-        run : docker build -t Myproject1_app_${{ github.sha }}:v.1 /home/ubuntu/${{ env.PACKAGE_S3_BUCKET_NAME }}/Myproject1_app_${{ github.sha }}/
-                
-      - name: Run Doker container
-        run : docker run -d -p 7777:80 Myproject1_app_${{ github.sha }}:v1 
-          
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.MY_SSH_HOST }}
+          username: ${{ secrets.MY_SSH_USER }}
+          key: ${{ secrets.MY_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.MY_SSH_PORT }}
+          script: |
+            cp ./  /home/ubuntu/Myproject1_app_${{ github.sha }}/ -x *.git*
+            docker build -t Myproject1_app_${{ github.sha }}:v.1 /home/ubuntu/Myproject1_app_${{ github.sha }}/
+            docker run -d -p 7777:80 Myproject1_app_${{ github.sha }}:v1 
+             
       - name: Print Message for CD finish
         run : echo "CD Pipeline part finished successfully!" 
     
