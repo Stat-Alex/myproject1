@@ -28,7 +28,7 @@ jobs:
           key: ${{ secrets.MY_SSH_PRIVATE_KEY }}
           port: ${{ secrets.MY_SSH_PORT }}
           script: |
-            cp ./  /home/ubuntu/Myproject1_app_${{ github.sha }}/ -x *.git*
+            cp ./  /home/ubuntu/Myproject1_app_${{ github.sha }}/
             docker build -t Myproject1_app_${{ github.sha }}:v.1 /home/ubuntu/Myproject1_app_${{ github.sha }}/
             docker run -d -p 7777:80 Myproject1_app_${{ github.sha }}:v1 
              
