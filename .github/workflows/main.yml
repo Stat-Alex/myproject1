@@ -33,7 +33,7 @@ jobs:
             docker run -d -p 7777:80 Myproject1_app_${{ github.sha }}:v1 
              
       - name: Print Message for CD finish
-        run : echo "CD Pipeline part finished successfully!" 
+        run : echo "CD Pipeline part finished successfully!!" 
     
           
           
