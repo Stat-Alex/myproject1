@@ -28,7 +28,7 @@ jobs:
             mkdir ${{ env.APPLICATION_NAME }}
             cd ${{ env.APPLICATION_NAME }}
             git clone git@github.com:Stat-Alex/myproject1.git myproject_application
-            cd ${{ env.APPLICATION_NAME }}/myproject_application
+            cd myproject_application
             docker build -t myproject_app:ver.1 .
 #            docker run -d -p 7777:80 myproject1_app_${{ github.sha }}:v1 
              
