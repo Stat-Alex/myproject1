@@ -3,7 +3,7 @@
 name: CI-CD-Pipeline-to-AWS-ElasticBeanstalk
 env:
   PACKAGE_S3_BUCKET_NAME : "myproject1-aplication-packages"
-  APPLICATION_NAME       : "Myproject1_v.${{ github.sha }}"
+  APPLICATION_NAME       : "myproject1_v.${{ github.sha }}"
   ENVIRONMENT_NAME       : "Myproject1-env"
   DEPLOY_PACKAGE_NAME    : "Myproject1_app_${{ github.sha }}.zip"
   AWS_REGION_NAME        : "eu-north-1"
@@ -28,7 +28,7 @@ jobs:
             mkdir ${{ env.APPLICATION_NAME }}
             cd ${{ env.APPLICATION_NAME }}
             git clone git@github.com:Stat-Alex/myproject1.git myproject_app_v.1
-            docker build -t myproject1_app:v.1 /home/ubuntu/${{ env.APPLICATION_NAME }}/myproject1_app_v.1/
+            docker build -t /home/ubuntu/${{ env.APPLICATION_NAME }}/myproject1_app_v.1/myproject_app:ver1 .
 #            docker run -d -p 7777:80 myproject1_app_${{ github.sha }}:v1 
              
       - name: Print Message for CD finish
