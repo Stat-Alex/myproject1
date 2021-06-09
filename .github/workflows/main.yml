@@ -28,7 +28,8 @@ jobs:
             mkdir ${{ env.APPLICATION_NAME }}
             cd ${{ env.APPLICATION_NAME }}
             git clone git@github.com:Stat-Alex/myproject1.git myproject_application
-            docker build -t home/ubuntu/${{ env.APPLICATION_NAME }}/myproject_application/myproject_app:ver.1 .
+            cd ${{ env.APPLICATION_NAME }}/myproject_application
+            docker build -t myproject_app:ver.1 .
 #            docker run -d -p 7777:80 myproject1_app_${{ github.sha }}:v1 
              
       - name: Print Message for CD finish
