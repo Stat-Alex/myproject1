@@ -26,7 +26,8 @@ jobs:
             git clone git@github.com:Stat-Alex/myproject1.git myproject_application
             cd myproject_application
             docker build -t myproject_app_${{ github.sha }}:v.1 .
-            docker run -d -p 7777:80 myproject1_app_${{ github.sha }}:v.1 
+            docker images
+#            docker run -d -p 7777:80 myproject1_app_${{ github.sha }}:v.1 
              
       - name: Print Message for CD finish
         run : echo "CD Pipeline part finished successfully!!!" 
