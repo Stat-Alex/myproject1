@@ -3,7 +3,7 @@
 name: CI-CD-Pipeline-to-AWS-ElasticBeanstalk
 env:
   PACKAGE_S3_BUCKET_NAME : "myproject1-aplication-packages"
-  APPLICATION_NAME       : "Myproject1"
+  APPLICATION_NAME       : "Myproject1_v.${{ github.sha }}"
   ENVIRONMENT_NAME       : "Myproject1-env"
   DEPLOY_PACKAGE_NAME    : "Myproject1_app_${{ github.sha }}.zip"
   AWS_REGION_NAME        : "eu-north-1"
@@ -25,8 +25,9 @@ jobs:
           key: ${{ secrets.MY_SSH_PRIVATE_KEY }}
           port: ${{ secrets.MY_SSH_PORT }}
           script: |
-            pwd
-            ls -la
+            mkdir ${{ env.APPLICATION_NAME }}
+            cd ${{ env.APPLICATION_NAME }}
+            git clone git@github.com:Stat-Alex/myproject1.git myproject_app_v.${{ github.sha }}
 #            cp ${{ env.DEPLOY_PACKAGE_NAME }}  /home/ubuntu/myproject1_app_${{ github.sha }}/
 #           unzip /home/ubuntu/myproject1_app_${{ github.sha }}/${{ env.DEPLOY_PACKAGE_NAME }} /home/ubuntu/myproject1_app_${{ github.sha }}/
 #            docker build -t myproject1_app_${{ github.sha }}:v.1 /home/ubuntu/myproject1_app_${{ github.sha }}/
