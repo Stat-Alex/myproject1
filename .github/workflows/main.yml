@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI-CD-Pipeline-to-AWS-ElasticBeanstalk
+name: CI-CD-Pipeline-to-Remote-server
 env:
   APPLICATION_NAME       : "myproject1_${{ github.sha }}"
   
@@ -27,7 +27,7 @@ jobs:
             cd myproject_application
             docker build -t myproject_app_${{ github.sha }}:v.1 .
             docker images
-#            docker run -d -p 7777:80 myproject1_app_${{ github.sha }}:v.1 
+            docker run -d -p 7777:80 myproject_app_${{ github.sha }}:v.1 
              
       - name: Print Message for CD finish
         run : echo "CD Pipeline part finished successfully!!!" 
