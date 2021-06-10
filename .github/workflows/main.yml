@@ -21,8 +21,10 @@ jobs:
           key: ${{ secrets.MY_SSH_PRIVATE_KEY }}
           port: ${{ secrets.MY_SSH_PORT }}
           script: |
-            mkdir ${{ env.APPLICATION_NAME }}
-            cd ${{ env.APPLICATION_NAME }}
+            mkdir github_actions
+            rm -rf github_actions/
+            mkdir -p github_actions/${{ env.APPLICATION_NAME }}/
+            cd github_actions/${{ env.APPLICATION_NAME }}/
             git clone git@github.com:Stat-Alex/myproject1.git myproject_application
             cd myproject_application
             docker build -t myproject_app_${{ github.sha }}:v.1 .
